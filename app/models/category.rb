@@ -2,7 +2,7 @@ class Category < ActiveRecord::Base
 
 	has_many :children, :class_name => "Category", :foreign_key => "parent_id"
 	belongs_to :parent, :class_name => "Category"
-  has_many :products
+  	has_many :products
 
 	def to_tree
 	    {
@@ -13,7 +13,8 @@ class Category < ActiveRecord::Base
 			"name" => self.name,
 			"parent_id_str" => self.parent_id_str,
 			"parent_id" => self.parent_id,
-		    "subCategory"  => self.children.map { |c| c.to_tree }
+		    "subCategory"  => self.children.map { |c| c.to_tree },
+		    "products" =>self.products
 	    }
   end
 
