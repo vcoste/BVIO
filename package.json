@@ -4,7 +4,6 @@
   "description": "BVIO hackathon project",
   "main": "server.js",
   "scripts": {
-    "test": "test",
     "start": "node server.js"
   },
   "repository": {
@@ -15,6 +14,9 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/vcoste/BVIO/issues"
+  },
+  "dependencies": {
+    "mysql": "2.x.x"
   },
   "homepage": "https://github.com/vcoste/BVIO",
   "engines": {
