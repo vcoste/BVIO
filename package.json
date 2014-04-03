@@ -1,0 +1,25 @@
+{
+  "name": "BVIO",
+  "version": "0.0.0",
+  "description": "BVIO hackathon project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vcoste/BVIO.git"
+  },
+  "author": "Waterloo intern team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vcoste/BVIO/issues"
+  },
+  "dependencies": {
+    "mysql": "2.x.x"
+  },
+  "homepage": "https://github.com/vcoste/BVIO",
+  "engines": {
+    "node": "0.10.x"
+  }
+}
