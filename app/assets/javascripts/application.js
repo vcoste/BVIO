@@ -13,4 +13,14 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require leaflet.js
+//= require tomtom.map.js
 //= require_tree .
+
+
+
+
+
+
+
+
