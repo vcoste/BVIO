@@ -22,9 +22,19 @@ class Category < ActiveRecord::Base
     products = self.products
     avg_ratings = {}
     products.sort_by{|p|
-      p.get_avg_rating_by_location(t_left, t_right, b_left, b_right)
+      Review.get_avg_rating(p.get_reviews_by_location(t_left, t_right, b_left, b_right))
     }
     products
+  end
+
+  def get_reviews_by_area(t_left, t_right, b_left, b_right)
+    products = self.products
+    reviews = []
+    products.map{|p|
+      reviews << p.get_reviews_by_location(t_left, t_right, b_left, b_right)
+    }
+    reviews.flatten!
+    reviews
   end
 
 end
