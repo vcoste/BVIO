@@ -1,0 +1,11 @@
+{
+  "name": "Cool app",
+  "description": "Waterloo team for BVIO",
+  "author": "Waterloo intern team",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "vows": "0.5.x"
+  },
+  "engine": "node >= 0.4.1"
+}
