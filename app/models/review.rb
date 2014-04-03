@@ -23,4 +23,20 @@ class Review < ActiveRecord::Base
   	satisfaction = (satisfactionSum/reviewArray.length) * 100 #return a percentage
   	return satisfaction
   end
+
+  def self.get_helpfulness(reviewArray)
+  	helpfulnessSum = 0
+  	totalHelpfulness = 0
+  	reviewArray.each { |r| 
+  	  if r.nil?
+  			# do not count (should be NULL)
+	  else
+	  	totalHelpfulness ++
+	  	helpfulnessSum += r.helpfulness
+	  end
+  	}
+  	helpfulness = (helpfulnessSum/totalHelpfulness) * 100 #return a percentage
+  	return helpfulness
+  end
+
 end
