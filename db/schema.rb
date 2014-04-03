@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140403142625) do
+ActiveRecord::Schema.define(version: 20140403190405) do
 
   create_table "authors", force: true do |t|
     t.string   "gender"
@@ -74,6 +74,12 @@ ActiveRecord::Schema.define(version: 20140403142625) do
     t.integer  "total_positive_feedback_count"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_recommended"
+    t.string   "pros"
+    t.string   "cons"
+    t.string   "last_modification_time"
+    t.float    "latitude"
+    t.float    "longitude"
   end
 
   create_table "test", id: false, force: true do |t|
