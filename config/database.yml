@@ -23,7 +23,11 @@ test:
   timeout: 5000
 
 production:
-  adapter: sqlite3
-  database: db/production.sqlite3
+  adapter: mysql2
+  encoding: utf8
+  database: Dove
+  hostname: waterloocoops.cqz8nkry4jqi.us-east-1.rds.amazonaws.com
   pool: 5
-  timeout: 5000
+  username: waterloocoops
+  password: canadarulez
+  port: 3306

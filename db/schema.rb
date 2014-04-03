@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140403131606) do
+ActiveRecord::Schema.define(version: 20140403142625) do
 
   create_table "authors", force: true do |t|
     t.string   "gender"
@@ -54,6 +54,11 @@ ActiveRecord::Schema.define(version: 20140403131606) do
     t.float    "effectiveness"
     t.float    "satisfaction"
     t.integer  "num_reviews"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "reviews", force: true do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
   end
