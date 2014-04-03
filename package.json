@@ -1,11 +1,23 @@
 {
-  "name": "Cool app",
-  "description": "Waterloo team for BVIO",
+  "name": "BVIO",
+  "version": "0.0.0",
+  "description": "BVIO hackathon project",
+  "main": "server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vcoste/BVIO.git"
+  },
   "author": "Waterloo intern team",
-  "dependencies": {
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vcoste/BVIO/issues"
   },
-  "devDependencies": {
-    "vows": "0.5.x"
-  },
-  "engine": "node >= 0.4.1"
+  "homepage": "https://github.com/vcoste/BVIO",
+  "engines": {
+    "node": "0.10.x"
+  }
 }

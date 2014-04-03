@@ -5,4 +5,4 @@ http.createServer(function (request, response) {
     response.end('Hello World\n');
 }).listen(3000);
 
-console.log('waiting for ever');
+console.log('listening on port 3000');
