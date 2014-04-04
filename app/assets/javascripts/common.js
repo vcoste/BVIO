@@ -196,9 +196,16 @@
 		}).done(function(response) {
 			$.each(response, function(index, category) {
 				var category = $("<li data-id='" + category.id + "'>" + category.name  + "</li>");
-				$("#categoryNavigationList").append(category);	
+				category.on("click", function() {
+					$("#categoryNavigationList .selected").removeClass("selected");
+					$(this).addClass("selected");
+					category_id = $(this).data("id");
+				});
+				$("#categoryNavigationList").append(category);
 			});
-		});
+
+			$($("#categoryNavigationList").children()[0]).click();
+		});	
 
 		tomtom.apiKey = "cqz42jgvsqt6qra52jj373hr";
 		getLocation(displayMap);
