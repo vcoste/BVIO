@@ -194,7 +194,6 @@
 			url: "/categories",
 			dataType: "json"
 		}).done(function(response) {
-			console.log(response);
 			$.each(response, function(index, category) {
 				var category = $("<li data-id='" + category.id + "'>" + category.name  + "</li>");
 				$("#categoryNavigationList").append(category);	
