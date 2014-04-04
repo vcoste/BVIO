@@ -4,9 +4,8 @@ class Category < ActiveRecord::Base
 	belongs_to :parent, :class_name => "Category"
 	has_many :products
 
-	def to_tree(all_cats, products)
+	def to_tree(all_cats)
       children = all_cats.select{|c| c.parent_id == self.id}
-      leaf_products = products.select{|c| c.category_id == self.id}
 	    {
 	    	"id" => self.id,
 	    	"category_page_url" => self.category_page_url,
@@ -15,8 +14,7 @@ class Category < ActiveRecord::Base
   			"name" => self.name,
   			"parent_id_str" => self.parent_id_str,
   			"parent_id" => self.parent_id,
-		    "sub_categories"  => children.map { |c| c.to_tree(all_cats, products) }.sort_by{|c| c["name"]},
-		    "products" => leaf_products.sort_by{|p| p.name}
+		    "sub_categories"  => children.map { |c| c.to_tree(all_cats) }.sort_by{|c| c["name"]}
 	    }
   end
 
