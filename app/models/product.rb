@@ -9,7 +9,6 @@ class Product < ActiveRecord::Base
       r.latitude <= t_right['latitude'].to_f and r.latitude >= b_right['latitude'].to_f and r.latitude <= t_left['latitude'].to_f and r.latitude >= b_left['latitude'].to_f and
       r.longitude <= t_right['longitude'].to_f and r.longitude >= t_left['longitude'].to_f and r.longitude >= b_left['longitude'].to_f and r.longitude <= b_right['longitude'].to_f
     }
-    puts reviews.length
     reviews
   end
 

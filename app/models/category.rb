@@ -37,7 +37,7 @@ class Category < ActiveRecord::Base
       products << c.get_all_products(t_left, t_right, b_left, b_right, all_cats, all_products)
     }
     products.flatten!
-    products.sort_by!{|p| p["avg_rating"]}
+    products.sort_by!{|p| p["avg_rating"]}.reverse!
     products
   end
 
