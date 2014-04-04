@@ -33,6 +33,7 @@ group :doc do
 end
 
 gem 'mysql2'
+gem 'rails_12factor', group: :production
 # Use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
@@ -44,3 +45,4 @@ gem 'mysql2'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+ruby "2.0.0"
