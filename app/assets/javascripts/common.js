@@ -177,7 +177,7 @@
 			for (var j = 0; (j < 3 && j < response.tag_array.length); j++) {
 				var tag = Object.keys(response.tag_array[j]);
 				var percent = (response.tag_array[j])[tag];
-				$(".product-tag-recommendations").append("<li>" + tag +  " - " + percent + "%</li>")
+				$(".product-tag-recommendations").append("<li>" + tag +  " - " + Number(percent).toFixed() + "%</li>")
 			}
 
 			$(".gender-male").html("&#9794;&nbsp;" + response.gender_percentages.Male + "%");
