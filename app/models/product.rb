@@ -4,6 +4,11 @@ class Product < ActiveRecord::Base
   has_many :reviews
 
   def get_reviews_by_area(t_left, t_right, b_left, b_right)
+    puts t_left
+      puts t_right
+      puts b_left
+      puts b_right
+
     reviews = self.reviews
     reviews.select!{|r|
       r.latitude >= t_right['latitude'].to_f and r.latitude <= b_right['latitude'].to_f and r.latitude >= t_left['latitude'].to_f and r.latitude <= b_left['latitude'].to_f and
