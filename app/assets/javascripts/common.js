@@ -1,10 +1,12 @@
 (function($) {
 	var map;
 	var markerManager;
+	var mapCoordinates;
+	var currentCoordinates;
 
-	function getLocation() {
+	function getLocation(cb) {
 		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(displayMap);
+			navigator.geolocation.getCurrentPosition(cb);
 	    }
 	}
 
@@ -33,7 +35,7 @@
 	}
 
 	function displayMap(position) { 
-		tomtom.setImagePath("../../vendor/assets/images");
+		currentCoordinates = position;
 		map = new tomtom.Map({
 			domNode: "map-container",
 			center: [position.coords.latitude, position.coords.longitude],
@@ -45,6 +47,13 @@
 		});
 
 		initMarkers(map);
+	}
+
+	function setView(position) { 
+		currentCoordinates = position;
+		console.log(position);
+		var latlng = L.latLng(parseFloat(position.coords.latitude), parseFloat(position.coords.longitude));
+		map.setView (latlng, 14, false);
 	}
 
 	function initMarkers(map) {
@@ -62,22 +71,28 @@
 		markerManager.update();
 	}
 
-	// function removeMarkers(coordinatesArray) {
-	// 	markerManager.update();
-	// }
-
 	function removeAllMarkers(coordinatesArray) {
 		markerManager.clearMarkers();
 		markerManager.update();
 	}
 
+
 	$(function () {
 		tomtom.apiKey = "cqz42jgvsqt6qra52jj373hr";
 		tomtom.setImagePath("../../vendor/assets/images");
 
-		getLocation();
-		// map.on("load", function() {
-		// 	alert("MAP Loaded");
-		// });
+		$("#reDoSearch").bind( "click", function() {
+		  mapCoordinates = getCornerCoordinates(map)
+		  console.log(mapCoordinates);
+		  //search with the updated coordinates
+		  //basicaly ajax call to get data from given coordinates
+		});
+
+		$("#locateMe").bind( "click", function() {
+			getLocation(setView)
+			// map.locate();
+		});
+
+		getLocation(displayMap);
 	});
 })(jQuery);
