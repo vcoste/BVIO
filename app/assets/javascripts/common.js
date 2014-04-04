@@ -48,7 +48,23 @@
 		});
 
 		initMarkers(map);
+		renderMapButtons(map);
 		getProducts(category_id, map);
+	}
+
+	function renderMapButtons(map) {
+		var homeButton = $("<a id='searchHome'><i class='fa fa-home'></i> Home</a>");
+		homeButton.on("click", function() {
+			getLocation(setView);
+		});
+		$(".map-buttons").append(searchButton);
+
+		var searchButton = $("<a id='searchProducts'><i class='fa fa-search'></i> Search</a>");
+		searchButton.on("click", function() {
+			mapCoordinates = getCornerCoordinates(map);
+			getProducts(category_id, map);
+		});
+		$(".map-buttons").append(searchButton);
 	}
 
 	function setView(position) { 
@@ -87,17 +103,20 @@
 				corners: getCornerCoordinates(map)	
 			}
 		}).done(function(response) {
+			$("#productTable tbody").empty();
 			$.each(response, function(index, product) {
-				var tableRow = $("<tr>" +
+				var tableRow = $("<tr data-id='" + product.id + "'>" +
 					"<td>" + product.name + "</td>" +
 					"<td>" + product.avg_rating + "</td>" +
 					"<td>" + product.satisfaction + "</td>" +
 					"<td>" + product.total_reviews + "</td>" +
+					"<td>" + product.num_recommendations + "</td>" +
 				"</tr>");
 				tableRow.on("click", function() {
 					if (!$(this).hasClass("selected")) {
 						$("#productTable tbody .selected").removeClass("selected");
 						$(this).addClass("selected");
+						getProductInformation($(this).data("id"), map);
 					}
 				});
 				$("#productTable tbody").append(tableRow);
@@ -105,6 +124,17 @@
 		});
 	}
 
+	function getProductInformation(id, map) {
+		$.ajax({
+			url: "/products/" + id,
+			dataType: "json",
+			data: {
+				corners: getCornerCoordinates(map)
+			}
+		}).done(function(response) {
+			console.log(response);
+		});
+	}
 
 	$(function () {
 		tomtom.apiKey = "cqz42jgvsqt6qra52jj373hr";
