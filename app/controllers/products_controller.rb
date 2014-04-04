@@ -31,9 +31,10 @@ class ProductsController < ApplicationController
     tag_array = Review.tag_count(reviews)
     gender_percentages = Review.get_gender_percent(reviews)
     top_review = Review.get_top_review(reviews)
+    is_recommended_location = Review.get_recommended(reviews)
 
-    product = JSON.parse(product.to_json).merge({"avg_rating" => average_rating, "tag_array" => tag_array, "gender_percentages" => gender_percentages, "top_review" => top_review})
-    
+    product = JSON.parse(product.to_json).merge({"avg_rating" => average_rating, "tag_array" => tag_array, "gender_percentages" => gender_percentages, "top_review" => top_review, "is_recommended_location" => is_recommended_location})
+
     render :json => product.to_json, :status => 200
 
   end
