@@ -84,7 +84,7 @@ class Review < ActiveRecord::Base
     recommended_reviews > num_reviews/2
   end
 
-  def self.num_recommendations
+  def self.num_recommendations(reviews)
     recommended_reviews = reviews.select{|r| r.is_recommended}.length
     recommended_reviews
   end
