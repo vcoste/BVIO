@@ -1,0 +1,31 @@
+Problem
+	Lots of reviews coming from lots of places. 
+		Lots of reviews not fully analyzed.
+
+
+	Would be interesting so see what areas prefer what types of producs
+	One way of looking at reviews is to sort them by locations
+ 
+ - Attacking reviews/UGC from location angle
+
+Use of the app
+	1. This is a tool for the markets on clients end to use and analyze what kind of reviews are coming in by geo location
+	2. **** App used by shoppers to find out what is 'hot' in their area
+
+Demo:
+1. show review across globe
+	> Select Category
+	> Select Procuct
+	> Show markers
+	> Show table
+	> Zoom and show change
+	> Use "find me" and/or "serach again" button
+
+Demo story:
+"how many people in this room use some kind of hair product?"
+"Ever wonder what the most popular <Hair product> is in NA? or even Austin?"
+<demo>
+
+Questions:
+- markers displayed on first page load?
+- default category/product?
