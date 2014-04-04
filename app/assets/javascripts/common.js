@@ -79,7 +79,7 @@
 
 	$(function () {
 		tomtom.apiKey = "cqz42jgvsqt6qra52jj373hr";
-		tomtom.setImagePath("../../vendor/assets/images");
+		tomtom.setImagePath("/assets/map");
 
 		$("#reDoSearch").bind( "click", function() {
 		  mapCoordinates = getCornerCoordinates(map)

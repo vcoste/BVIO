@@ -1,16 +1,16 @@
 body {
-	background-image: url("http://parrillaexpress.com/img/backgrounds/blur2.jpg");
+	background-image: url("/assets/background.jpg");
 	font-family: 'Roboto', sans-serif;
 	font-weight: 100;
 }
 
 .app-container {
-	margin: 40px auto;
+	margin: 40px auto 20px;
 	width: 95%;
 }
 
 .clear {
-	both: clear;
+	clear: both;
 }
 
 .feed-container {
@@ -20,19 +20,20 @@ body {
 
 .map-container {
 	width: 100%;
-	height: 480px;
+	height: 400px;
 }
 
 .navigation {
 	float: left;
-	height: 500px;
 	width: 18%;
 
 	ul {
 		background-color: rgba(0,0,0,0.7);
 		border-bottom: 6px solid rgba(255,255,255,0.15);
+		height: 805px;
 		list-style-type: none;
 		margin: 0;
+		overflow-y: scroll;
 		padding: 0;
 
 		.navigation-title {
@@ -64,8 +65,9 @@ body {
 }
 
 .product-details {
-	background-color: rgba(255,255,255,0.5);
+	background-color: rgba(255,255,255,0.78);
 	float: left;
+	height: 810px;
 	text-align: center;
 	width: 18%;
 
@@ -93,6 +95,7 @@ body {
 
 	.sub-heading {
 		margin: 10px 0 0;
+		text-decoration: underline;
 	}
 
 	.review-stars {
@@ -121,9 +124,13 @@ body {
 }
 
 .product-table-container {
+	height: 410px;
+	overflow-y: scroll;
+
 	table {
-		background-color: rgba(255,255,255,0.5);
+		background-color: rgba(255,255,255,0.83);
 		border-collapse: collapse;
+		height: 410px;
 
 		td {
 			padding: 5px 15px;
@@ -135,7 +142,8 @@ body {
 		}
 
 		th {
-			border-bottom: 1px dashed rgba(0,0,0,0.1);
+			background-color: #405a57;
+			color: #ebecf1;
 			padding: 10px 15px;
 			text-align: left;
 		}
