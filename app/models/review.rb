@@ -8,7 +8,7 @@ class Review < ActiveRecord::Base
 
   def self.get_avg_rating(reviewArray)
   	ratingSum = reviewArray.map{ |r| r.rating }.inject(:+)
-  	avg = ratingSum.to_f/reviewArray.length
+  	avg = reviewArray.length > 0 ? ratingSum.to_f/reviewArray.length : 0
   	return avg
   end
 
@@ -18,8 +18,8 @@ class Review < ActiveRecord::Base
 
   def self.get_satisfaction(reviewArray)
   	satisfactionSum = 0
-  	reviewArray.each { |r| satisfactionSum += r.is_recommended }
-  	satisfaction = (satisfactionSum/reviewArray.length) * 100.00 #return a percentage
+  	reviewArray.each { |r| satisfactionSum += 1 if r.is_recommended }
+  	satisfaction = reviewArray.length > 0 ? (satisfactionSum/reviewArray.length) * 100.00 : 0.00 #return a percentage
   	return satisfaction
   end
 
@@ -34,7 +34,7 @@ class Review < ActiveRecord::Base
 	  	helpfulnessSum += r.helpfulness
 	  end
   	}
-  	helpfulness = (helpfulnessSum/totalHelpfulness) * 100 #return a percentage
+  	helpfulness = totalHelpfulness > 0 ? (helpfulnessSum/totalHelpfulness) * 100.00 : 0.00 #return a percentage
   	return helpfulness
   end
 

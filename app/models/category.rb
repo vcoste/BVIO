@@ -2,7 +2,7 @@ class Category < ActiveRecord::Base
 
 	has_many :children, :class_name => "Category", :foreign_key => "parent_id"
 	belongs_to :parent, :class_name => "Category"
-  	has_many :products
+	has_many :products
 
 	def to_tree(all_cats, products)
       children = all_cats.select{|c| c.parent_id == self.id}
@@ -20,12 +20,22 @@ class Category < ActiveRecord::Base
 	    }
   end
 
-  def get_top_products_for_area(t_left, t_right, b_left, b_right)
-    products = self.products
-    avg_ratings = {}
-    products.sort_by{|p|
-      Review.get_avg_rating(p.get_reviews_by_location(t_left, t_right, b_left, b_right))
+  def get_all_products(t_left, t_right, b_left, b_right, all_cats, all_products)
+    children = all_cats.select{|c| c.parent_id == self.id}
+    leaf_products = products.select{|c| c.category_id == self.id}
+    products = []
+    leaf_products.each{|p|
+      reviews = p.get_reviews_by_area(t_left, t_right, b_left, b_right)
+      avg_rating = Review.get_avg_rating(reviews).round(3)
+      satisfaction = Review.get_satisfaction(reviews).round(3)
+      total_num = reviews.length
+      new_leaf_product = JSON.parse(p.to_json).merge({"avg_rating" => avg_rating, "satisfaction" => satisfaction, "total_reviews" => total_num})
+      products << new_leaf_product
     }
+    children.each {|c|
+      products << c.get_all_products(t_left, t_right, b_left, b_right, all_cats, all_products)
+    }
+    products.flatten!
     products
   end
 
