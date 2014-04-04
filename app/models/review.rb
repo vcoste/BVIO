@@ -67,7 +67,7 @@ class Review < ActiveRecord::Base
   def self.get_gender_percent(reviews)
     num_reviews = reviews.length
     author_ids = reviews.map{|r| r.author_id}
-    all_authors = Author.all.select{|x| author_ids.include? id}
+    all_authors = Author.all.select{|x| author_ids.include? x.id}
     total_female = all_authors.select{|a| a.gender.downcase == "female"}.length
     total_male = all_authors.select{|a| a.gender.downcase == "male"}.length
     {"Female" => (total_female / num_reviews) * 100, "Male" => (total_male/num_reviews) * 100}
@@ -82,6 +82,11 @@ class Review < ActiveRecord::Base
     num_reviews = reviews.length
     recommended_reviews = reviews.select{|r| r.is_recommended}.length
     recommended_reviews > num_reviews/2
+  end
+
+  def self.num_recommendations
+    recommended_reviews = reviews.select{|r| r.is_recommended}.length
+    recommended_reviews
   end
 
 end
