@@ -131,6 +131,7 @@ body {
 		background-color: rgba(255,255,255,0.83);
 		border-collapse: collapse;
 		height: 410px;
+		width: 100%;
 
 		td {
 			padding: 5px 15px;
@@ -161,7 +162,7 @@ body {
 		}
 
 		.selected {
-			background-color: rgba(85,194,221,0.4);
+			background-color: rgba(85,194,221,0.4) !important;
 		}
 	}
 }

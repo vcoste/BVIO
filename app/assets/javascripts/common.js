@@ -86,17 +86,29 @@
 				category_id: category,
 				corners: getCornerCoordinates(map)	
 			}
-		}).done(function(response){
-			console.log(response);
-		}).fail(function(response){
-			console.log(response);
-		})
+		}).done(function(response) {
+			$.each(response, function(index, product) {
+				var tableRow = $("<tr>" +
+					"<td>" + product.name + "</td>" +
+					"<td>" + product.avg_rating + "</td>" +
+					"<td>" + product.satisfaction + "</td>" +
+					"<td>" + product.total_reviews + "</td>" +
+				"</tr>");
+				tableRow.on("click", function() {
+					if (!$(this).hasClass("selected")) {
+						$("#productTable tbody .selected").removeClass("selected");
+						$(this).addClass("selected");
+					}
+				});
+				$("#productTable tbody").append(tableRow);
+			});
+		});
 	}
 
 
 	$(function () {
 		tomtom.apiKey = "cqz42jgvsqt6qra52jj373hr";
-		tomtom.setImagePath("../../../vendor/assets/map");
+		//tomtom.setImagePath("../../../vendor/assets/map");
 
 		$("#reDoSearch").bind( "click", function() {
 		  mapCoordinates = getCornerCoordinates(map)
