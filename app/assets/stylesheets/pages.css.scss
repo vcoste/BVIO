@@ -35,6 +35,7 @@ body {
 			color: #ebecf1;
 			font-size: 14px;
 			font-weight: 700;
+			margin: 2px;
 			padding: 5px;	
 			position: relative;
 		}
@@ -86,8 +87,9 @@ body {
 	background-color: rgba(255,255,255,0.78);
 	float: left;
 	height: 810px;
+	padding: 0 5px;
 	text-align: center;
-	width: 18%;
+	width: 17%;
 
 	hr {
 		border: 0;
@@ -103,24 +105,6 @@ body {
 		width: 150px;
 	}
 
-	.product-title {
-		font-weight: 400;
-	}
-
-	.product-description {
-		font-size: 12px;
-	}
-
-	.sub-heading {
-		margin: 10px 0 0;
-		text-decoration: underline;
-	}
-
-	.review-stars {
-		color: rgba(243,188,21,0.7);
-		font-size: 25px;
-	}
-
 	.gender-male {
 		color: rgba(0,69,255,0.6);
 		font-size: 25px;
@@ -131,6 +115,42 @@ body {
 		color: rgba(255,112,187,0.7);
 		font-size: 25px;
 		font-weight: 700;
+	}
+
+	.product-title {
+		font-weight: 400;
+	}
+
+	.product-description {
+		font-size: 12px;
+	}
+
+	.product-tag-recommendations {
+		list-style-type: none;
+		margin: 10px 0;
+		padding: 0;
+	}
+
+	.review-stars {
+		color: rgba(243,188,21,0.7);
+		font-size: 25px;
+	}
+
+	.sub-heading {
+		margin: 10px 0 0;
+		text-decoration: underline;
+	}
+
+	.top-review {
+		font-size: 12px;
+	}
+
+	.top-review-rating {
+		margin: 5px 0 0;
+	}
+
+	.top-review-recommended {
+		margin: 0 0 10px;
 	}
 
 	.vertical-divider {
