@@ -7,7 +7,7 @@ Myapp::Application.routes.draw do
 
   resources :categories, :only => [:index]
 
-  resources :products, :only => [:index]
+  resources :products, :only => [:index, :show]
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

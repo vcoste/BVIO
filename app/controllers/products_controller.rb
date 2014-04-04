@@ -18,4 +18,24 @@ class ProductsController < ApplicationController
     render :json => products.to_json, :status => 200
   end
 
+  def show
+    id = params[:id].to_i if params[:id]
+    corners = params[:corners]
+    t_left = corners['NW']
+    t_right = corners['NE']
+    b_left = corners['SW']
+    b_right = corners['SE']
+    product = Product.find_by_id(id)
+    reviews = product.get_reviews_by_area(t_left, t_right, b_left, b_right)
+    average_rating = Review.get_avg_rating(reviews)
+    tag_array = Review.tag_count(reviews)
+
+
+    #-product recommendations (tags and percentage)/
+    #- gender percentages
+    #- top review
+    render :json => product.to_json, :status => 200
+
+  end
+
 end
