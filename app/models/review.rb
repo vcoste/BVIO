@@ -29,13 +29,40 @@ class Review < ActiveRecord::Base
   	reviewArray.each { |r| 
   	  if r.nil?
   			# do not count (should be NULL)
-	  else
+	   else
 	  	totalHelpfulness ++
 	  	helpfulnessSum += r.helpfulness
 	  end
   	}
   	helpfulness = (helpfulnessSum/totalHelpfulness) * 100 #return a percentage
   	return helpfulness
+  end
+
+  def self.tag_count(reviewArray)
+    tag_hash = Hash.new
+    tag_array = Array.new
+    tag_hash.default = 0
+    
+    reviewArray.each { |r|
+    tag_string = r.tags 
+      if tag_string.nil?
+        #do nothing
+      else
+        product_tags = JSON.parse(tag_string)
+        product_tags.each { |tag| 
+          tag_hash[tag] += 1
+        }
+      end
+    }
+
+    tag_hash.each { |key,value|
+      tag_array << {key => value}
+    }
+    tag_array.sort_by!{ |t|
+      t.values.first
+    }.reverse!
+
+    return tag_array
   end
 
 end
