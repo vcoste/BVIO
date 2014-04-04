@@ -3,6 +3,7 @@
 	var markerManager;
 	var mapCoordinates;
 	var currentCoordinates;
+	var category_id = 35;
 
 	function getLocation(cb) {
 		if (navigator.geolocation) {
@@ -47,6 +48,7 @@
 		});
 
 		initMarkers(map);
+		getProducts(category_id, map);
 	}
 
 	function setView(position) { 
@@ -74,6 +76,21 @@
 	function removeAllMarkers(coordinatesArray) {
 		markerManager.clearMarkers();
 		markerManager.update();
+	}
+
+	function getProducts(category, map) {
+		$.ajax({
+			url: "/products",
+			dataType: "json",
+			data: {
+				category_id: category,
+				corners: getCornerCoordinates(map)	
+			}
+		}).done(function(response){
+			console.log(response);
+		}).fail(function(response){
+			console.log(response);
+		})
 	}
 
 
