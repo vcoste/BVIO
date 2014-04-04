@@ -64,7 +64,7 @@ class Review < ActiveRecord::Base
     return tag_array
   end
 
-  def get_gender_percent(reviews)
+  def self.get_gender_percent(reviews)
     num_reviews = reviews.length
     author_ids = reviews.map{|r| r.author_id}
     all_authors = Author.all.select{|x| author_ids.include? id}
@@ -73,12 +73,12 @@ class Review < ActiveRecord::Base
     {"Female" => (total_female / num_reviews) * 100, "Male" => (total_male/num_reviews) * 100}
   end
 
-  def get_top_review(reviews)
+  def self.get_top_review(reviews)
     review = reviews.sort_by{|r| r.helpfulness}.reverse.first
     review
   end
 
-  def is_recommended(reviews)
+  def self.is_recommended(reviews)
     num_reviews = reviews.length
     recommended_reviews = reviews.select{|r| r.is_recommended}.length
     recommended_reviews > num_reviews/2
