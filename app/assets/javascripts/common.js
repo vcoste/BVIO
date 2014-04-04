@@ -3,13 +3,14 @@
 	var markerManager;
 	var mapCoordinates;
 	var currentCoordinates;
-	var category_id = 68;
+	var category_id;
 
 	var mapContainer;
 	var mapSpinner;
 
 	var tableContainer
 	var tableSpinner
+	var productInfoSpinner
 
 	function getLocation(cb) {
 		if (navigator.geolocation) {
@@ -59,12 +60,14 @@
 	function renderMapButtons(map) {
 		var homeButton = $("<a id='searchHome'><i class='fa fa-home'></i> Home</a>");
 		homeButton.on("click", function() {
+			removeAllMarkers();
 			getLocation(setView);
 		});
 		$(".map-buttons").append(homeButton);
 
 		var searchButton = $("<a id='searchProducts'><i class='fa fa-search'></i> Search</a>");
 		searchButton.on("click", function() {
+			removeAllMarkers();
 			mapCoordinates = getCornerCoordinates(map);
 			getProducts(category_id, map);
 		});
@@ -80,7 +83,7 @@
 	function initMarkers(map) {
 		markerManager = new tomtom.MarkerManager({
 			map: map,
-			animation: true,
+			// animation: true,
 			clustering: true
 		});
 	}
@@ -124,6 +127,8 @@
 				"</tr>");
 				tableRow.on("click", function() {
 					if (!$(this).hasClass("selected")) {
+						removeAllMarkers();
+						mapSpinner.spin();
 						$("#productTable tbody .selected").removeClass("selected");
 						$(this).addClass("selected");
 						getProductInformation($(this).data("id"), map);
@@ -135,44 +140,74 @@
 	}
 
 	function getProductInformation(id, map) {
+
+		var opts1 = {
+		  lines: 7, // The number of lines to draw
+		  length: 4, // The length of each line
+		  width: 2, // The line thickness
+		  radius: 2, // The radius of the inner circle
+		  corners: 1, // Corner roundness (0..1)
+		  rotate: 0, // The rotation offset
+		  direction: 1, // 1: clockwise, -1: counterclockwise
+		  color: '#000', // #rgb or #rrggbb or array of colors
+		  speed: 1, // Rounds per second
+		  trail: 60, // Afterglow percentage
+		  shadow: false, // Whether to render a shadow
+		  hwaccel: false, // Whether to use hardware acceleration
+		  className: 'spinner', // The CSS class to assign to the spinner
+		  zIndex: 2e9, // The z-index (defaults to 2000000000)
+		  top: '235px',
+		  left: '94%'
+		};
+
 		$.ajax({
 			url: "/products/" + id,
 			dataType: "json",
 			data: {
 				corners: getCornerCoordinates(map)
+			},
+			beforeSend: function() {
+				productContainer = document.getElementById('product-container');	
+				productInfoSpinner = new Spinner(opts1).spin(productContainer);
+				$(".product-details").empty();
 			}
 		}).done(function(response) {
+
+			productInfoSpinner.stop();
 			$(".product-details img").attr("src", response.image_url);
 			$(".product-title").html(response.name);
 
-			$(".review-stars").empty();
+
+			var starString = "";
 			for (var i = 1; i < 6; i++) {
 				if (i <= response.avg_rating) {
-					$(".review-stars").append("&#9733;&nbsp;");
+					starString += "&#9733;&nbsp;";
 				} else {
-					$(".review-stars").append("&#9734;&nbsp;");
+					starString += "&#9734;&nbsp;";
 				}
 			}
+			$(".product-details").append("<p class='sub-heading'>Average Ratings</p>");
+			$(".product-details").append("<span class='review-stars'>" + starString + "</span><hr/>");
 
+			$(".product-details").append("<p class='sub-heading'>Top Review</p>");
 			var reviewText = (response.top_review.review_text.length > 390 ? response.top_review.review_text.substr(0,390) + "..." : response.top_review.review_text);
-			$(".top-review").html('"' + reviewText +  '"');
-			$(".top-review-rating i").html(response.top_review.rating);
+			$(".product-details").append('<i class="top-review">"' + reviewText + '"</i>');
+			$(".product-details").append("<p class='top-review-rating'>Rating Given: <i>" + response.top_review.rating + "</i></p>");
+			$(".product-details").append("<p class='top-review-recommended'>Recommended Product: <i>" + (response.top_review.is_recommended ? "YES" : "NO") + "</i></p><hr/>");
 
-			if (response.top_review.is_recommended) {
-				$(".top-review-recommended i").html("YES");	
-			} else {
-				$(".top-review-recommended i").html("NO");
-			}
-
-			$(".product-tag-recommendations").empty();
+			$(".product-details").append("<p class='sub-heading'>Product Recommendations</p>");
+			var productRecommendations = "<ul class='product-tag-recommendations'>";
 			for (var j = 0; (j < 3 && j < response.tag_array.length); j++) {
 				var tag = Object.keys(response.tag_array[j]);
 				var percent = (response.tag_array[j])[tag];
-				$(".product-tag-recommendations").append("<li>" + tag +  " - " + Math.round(percent) + "%</li>")
+				productRecommendations += "<li>" + tag +  " - " + Math.round(percent) + "%</li>";
 			}
+			$(".product-details").append(productRecommendations + "</ul><hr/>");
 
-			$(".gender-male").html("&#9794;&nbsp;" + Math.round(response.gender_percentages.Male) + "%");
-			$(".gender-female").html("&#9792;&nbsp;" + Math.round(response.gender_percentages.Female) + "%");
+			$(".product-details").append("<p class='sub-heading'>Gender Demographics</p>");
+			$(".product-details").append("<span class='gender-male'>&#9794;&nbsp;" + Math.round(response.gender_percentages.Male) + "%</span>");
+			$(".product-details").append("<span class='vertical-divider'>|</span>");
+			$(".product-details").append("<span class='gender-female'>&#9792;&nbsp;" + Math.round(response.gender_percentages.Female) + "%</span>");
 
 			var coordinatesArray = new Array();
 			$.each(response.reviews, function(index, review) {
@@ -182,7 +217,7 @@
 				});
 			});
 
-			removeAllMarkers();
+			mapSpinner.stop();
 			addMarkers(coordinatesArray);
 		});
 	}
@@ -192,12 +227,20 @@
 			url: "/categories",
 			dataType: "json"
 		}).done(function(response) {
-			console.log(response);
 			$.each(response, function(index, category) {
 				var category = $("<li data-id='" + category.id + "'>" + category.name  + "</li>");
-				$("#categoryNavigationList").append(category);	
+				category.on("click", function() {
+					$("#categoryNavigationList .selected").removeClass("selected");
+					$(this).addClass("selected");
+					category_id = $(this).data("id");
+					console.log("HIT");
+					getProducts(category_id, map);
+				});
+				$("#categoryNavigationList").append(category);
 			});
-		});
+
+			$($("#categoryNavigationList").children()[0]).click();
+		});	
 
 		tomtom.apiKey = "cqz42jgvsqt6qra52jj373hr";
 		getLocation(displayMap);
@@ -215,7 +258,8 @@
 		  shadow: false, // Whether to render a shadow
 		  hwaccel: false, // Whether to use hardware acceleration
 		  className: 'spinner', // The CSS class to assign to the spinner
-		  zIndex: 2e9 // The z-index (defaults to 2000000000)
+		  zIndex: 2e9, // The z-index (defaults to 2000000000)
+		  top: '350px'
 		};
 		var opts2 = {
 		  lines: 13, // The number of lines to draw
