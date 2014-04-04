@@ -10,46 +10,6 @@
  *
  *= require_self
  *= require_tree .
+ *= require tomtom.map.min
  */
 
-body {
-	font-family: 'Roboto', sans-serif;
-	font-weight: 100;
-}
-
-.navigation {
-	ul {
-		background-color: rgba(0,0,0,0.7);
-		list-style-type: none;
-		width: 210px;
-	}
-
-	li {
-		color: #ebecf1;
-	}
-}
-
-.heading {
-	font-size: 100px;
-	font-weight: 100;
-	margin: 0px;
-}
-
-.hollow-navigation {
-	background-color: rgba(0,0,0,0.2);
-	height: 500px;
-	width: 210px;
-}
-
-.outer-wall {
-	margin: 20px;
-}
-
-.sub-heading {
-	font-weight: 100;
-	margin: 0px;
-}
-
-.title {
-	text-align: center;
-}
