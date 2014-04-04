@@ -60,12 +60,14 @@
 	function renderMapButtons(map) {
 		var homeButton = $("<a id='searchHome'><i class='fa fa-home'></i> Home</a>");
 		homeButton.on("click", function() {
+			removeAllMarkers();
 			getLocation(setView);
 		});
 		$(".map-buttons").append(homeButton);
 
 		var searchButton = $("<a id='searchProducts'><i class='fa fa-search'></i> Search</a>");
 		searchButton.on("click", function() {
+			removeAllMarkers();
 			mapCoordinates = getCornerCoordinates(map);
 			getProducts(category_id, map);
 		});
@@ -81,7 +83,7 @@
 	function initMarkers(map) {
 		markerManager = new tomtom.MarkerManager({
 			map: map,
-			animation: true,
+			// animation: true,
 			clustering: true
 		});
 	}
@@ -125,6 +127,8 @@
 				"</tr>");
 				tableRow.on("click", function() {
 					if (!$(this).hasClass("selected")) {
+						removeAllMarkers();
+						mapSpinner.spin();
 						$("#productTable tbody .selected").removeClass("selected");
 						$(this).addClass("selected");
 						getProductInformation($(this).data("id"), map);
@@ -168,9 +172,11 @@
 				$(".product-details").empty();
 			}
 		}).done(function(response) {
+
 			productInfoSpinner.stop();
-			$(".product-details").append("<img src='" + response.image_url + "'>");
-			$(".product-details").append("<p class='product-title'>" + response.name + "</p><hr/>");
+			$(".product-details img").attr("src", response.image_url);
+			$(".product-title").html(response.name);
+
 
 			var starString = "";
 			for (var i = 1; i < 6; i++) {
@@ -211,7 +217,7 @@
 				});
 			});
 
-			removeAllMarkers();
+			mapSpinner.stop();
 			addMarkers(coordinatesArray);
 		});
 	}
