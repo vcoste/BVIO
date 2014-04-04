@@ -16,11 +16,3 @@
 //= require leaflet.js
 //= require tomtom.map.js
 //= require_tree .
-
-
-
-
-
-
-
-

@@ -1,9 +1,7 @@
-tomtom.apiKey = "cqz42jgvsqt6qra52jj373hr";
-tomtom.setImagePath("../../vendor/assets/images");
-
-$( document ).ready(function() {
+(function($) {
 	var map;
 	var markerManager;
+
 	function getLocation() {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(displayMap);
@@ -34,11 +32,12 @@ $( document ).ready(function() {
 		return corners;
 	}
 
-	function displayMap(position) {
+	function displayMap(position) { 
+		tomtom.setImagePath("../../vendor/assets/images");
 		map = new tomtom.Map({
-			domNode: "map",
+			domNode: "map-container",
 			center: [position.coords.latitude, position.coords.longitude],
-			apiKey: tomtom.apiKey,
+			apiKey: "cqz42jgvsqt6qra52jj373hr",
 			zoom: 14,
 			overviewMap: true,
 			scale: true,
@@ -72,6 +71,13 @@ $( document ).ready(function() {
 		markerManager.update();
 	}
 
-	getLocation();
-	
-});
+	$(function () {
+		tomtom.apiKey = "cqz42jgvsqt6qra52jj373hr";
+		tomtom.setImagePath("../../vendor/assets/images");
+
+		getLocation();
+		// map.on("load", function() {
+		// 	alert("MAP Loaded");
+		// });
+	});
+})(jQuery);
