@@ -15,4 +15,5 @@
 //= require turbolinks
 //= require leaflet.js
 //= require tomtom.map.js
+//= require spin.js
 //= require_tree .

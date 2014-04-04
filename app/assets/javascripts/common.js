@@ -5,6 +5,12 @@
 	var currentCoordinates;
 	var category_id = 119;
 
+	var mapContainer;
+	var mapSpinner;
+
+	var tableContainer
+	var tableSpinner
+
 	function getLocation(cb) {
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(cb);
@@ -41,12 +47,11 @@
 			domNode: "map-container",
 			center: [position.coords.latitude, position.coords.longitude],
 			apiKey: "cqz42jgvsqt6qra52jj373hr",
-			zoom: 10,
-			overviewMap: true,
+			zoom: 9,
 			scale: true,
 			panZoomBar: true
 		});
-
+		mapSpinner.stop();
 		initMarkers(map);
 		renderMapButtons(map);
 		getProducts(category_id, map);
@@ -71,7 +76,7 @@
 		currentCoordinates = position;
 		console.log(position);
 		var latlng = L.latLng(parseFloat(position.coords.latitude), parseFloat(position.coords.longitude));
-		map.setView (latlng, 12, false);
+		map.setView (latlng, 9, false);
 	}
 
 	function initMarkers(map) {
@@ -103,7 +108,11 @@
 				corners: getCornerCoordinates(map)	
 			}
 		}).done(function(response) {
+
+			tableSpinner.stop();
+
 			$("#productTable tbody").empty();
+
 			$.each(response, function(index, product) {
 				var tableRow = $("<tr data-id='" + product.id + "'>" +
 					"<td>" + product.name + "</td>" +
@@ -145,6 +154,15 @@
 				}
 			}
 
+		
+
+		$("#reDoSearch").bind( "click", function() {
+		  mapCoordinates = getCornerCoordinates(map)
+		  console.log(mapCoordinates);
+		  //search with the updated coordinates
+		  //basicaly ajax call to get data from given coordinates
+		});
+
 			var reviewText = (response.top_review.review_text.length > 390 ? response.top_review.review_text.substr(0,390) + "..." : response.top_review.review_text);
 			$(".top-review").html('"' + reviewText +  '"');
 			$(".top-review-rating i").html(response.top_review.rating);
@@ -165,11 +183,53 @@
 			$(".gender-male").html("&#9794;&nbsp;" + response.gender_percentages.Male + "%");
 			$(".gender-female").html("&#9792;&nbsp;" + response.gender_percentages.Female + "%");
 
+
 		});
 	}
 
 	$(function () {
 		tomtom.apiKey = "cqz42jgvsqt6qra52jj373hr";
 		getLocation(displayMap);
+		var opts1 = {
+		  lines: 13, // The number of lines to draw
+		  length: 20, // The length of each line
+		  width: 10, // The line thickness
+		  radius: 30, // The radius of the inner circle
+		  corners: 1, // Corner roundness (0..1)
+		  rotate: 0, // The rotation offset
+		  direction: 1, // 1: clockwise, -1: counterclockwise
+		  color: '#000', // #rgb or #rrggbb or array of colors
+		  speed: 1, // Rounds per second
+		  trail: 60, // Afterglow percentage
+		  shadow: false, // Whether to render a shadow
+		  hwaccel: false, // Whether to use hardware acceleration
+		  className: 'spinner', // The CSS class to assign to the spinner
+		  zIndex: 2e9 // The z-index (defaults to 2000000000)
+		};
+		var opts2 = {
+		  lines: 13, // The number of lines to draw
+		  length: 20, // The length of each line
+		  width: 10, // The line thickness
+		  radius: 30, // The radius of the inner circle
+		  corners: 1, // Corner roundness (0..1)
+		  rotate: 0, // The rotation offset
+		  direction: 1, // 1: clockwise, -1: counterclockwise
+		  color: '#000', // #rgb or #rrggbb or array of colors
+		  speed: 1, // Rounds per second
+		  trail: 60, // Afterglow percentage
+		  shadow: false, // Whether to render a shadow
+		  hwaccel: false, // Whether to use hardware acceleration
+		  className: 'spinner', // The CSS class to assign to the spinner
+		  zIndex: 2e9, // The z-index (defaults to 2000000000) 
+		  top: '850px'  // Top position relative to parent in px
+		};
+		
+		mapContainer = document.getElementById('map-container');		
+		mapSpinner = new Spinner(opts1).spin(mapContainer);
+
+		tableContainer = document.getElementById('spinnerContainer');
+		console.log(tableContainer);
+		tableSpinner = new Spinner(opts2).spin(tableContainer);
+		
 	});
 })(jQuery);
