@@ -41,27 +41,41 @@ class Review < ActiveRecord::Base
     tag_hash = Hash.new
     tag_array = Array.new
     tag_hash.default = 0
+    total_value = 0
     
     reviewArray.each { |r|
-    tag_string = r.tags 
-      if tag_string.nil?
-        #do nothing
-      else
+      tag_string = r.tags 
+      if !tag_string.nil?
         product_tags = JSON.parse(tag_string)
         product_tags.each { |tag| 
           tag_hash[tag] += 1
+          total_value += 1
         }
       end
     }
 
     tag_hash.each { |key,value|
-      tag_array << {key => value}
+      tag_array << {key => (value/total_value) * 100}
     }
     tag_array.sort_by!{ |t|
       t.values.first
     }.reverse!
 
     return tag_array
+  end
+
+  def get_gender_percent(reviews)
+    num_reviews = reviews.length
+    author_ids = reviews.map{|r| r.author_id}
+    all_authors = Author.all.select{|x| author_ids.include? id}
+    total_female = all_authors.select{|a| a.gender.downcase == "female"}.length
+    total_male = all_authors.select{|a| a.gender.downcase == "male"}.length
+    {"Female" => (total_female / num_reviews) * 100, "Male" => (total_male/num_reviews) * 100}
+  end
+
+  def get_top_review(reviews)
+    review = reviews.sort_by{|r| r.helpfulness}.reverse.first
+    review
   end
 
 end
