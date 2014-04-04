@@ -142,37 +142,39 @@
 				corners: getCornerCoordinates(map)
 			}
 		}).done(function(response) {
-			$(".product-details img").attr("src", response.image_url);
-			$(".product-title").html(response.name);
+			$(".product-details").append("<img src='" + response.image_url + "'>");
+			$(".product-details").append("<p class='product-title'>" + response.name + "</p><hr/>");
 
-			$(".review-stars").empty();
+			var starString = "";
 			for (var i = 1; i < 6; i++) {
 				if (i <= response.avg_rating) {
-					$(".review-stars").append("&#9733;&nbsp;");
+					starString += "&#9733;&nbsp;";
 				} else {
-					$(".review-stars").append("&#9734;&nbsp;");
+					starString += "&#9734;&nbsp;";
 				}
 			}
+			$(".product-details").append("<p class='sub-heading'>Average Ratings</p>");
+			$(".product-details").append("<span class='review-stars'>" + starString + "</span><hr/>");
 
+			$(".product-details").append("<p class='sub-heading'>Top Review</p>");
 			var reviewText = (response.top_review.review_text.length > 390 ? response.top_review.review_text.substr(0,390) + "..." : response.top_review.review_text);
-			$(".top-review").html('"' + reviewText +  '"');
-			$(".top-review-rating i").html(response.top_review.rating);
+			$(".product-details").append('<i class="top-review">"' + reviewText + '"</i>');
+			$(".product-details").append("<p class='top-review-rating'>Rating Given: <i>" + response.top_review.rating + "</i></p>");
+			$(".product-details").append("<p class='top-review-recommended'>Recommended Product: <i>" + (response.top_review.is_recommended ? "YES" : "NO") + "</i></p><hr/>");
 
-			if (response.top_review.is_recommended) {
-				$(".top-review-recommended i").html("YES");	
-			} else {
-				$(".top-review-recommended i").html("NO");
-			}
-
-			$(".product-tag-recommendations").empty();
+			$(".product-details").append("<p class='sub-heading'>Product Recommendations</p>");
+			var productRecommendations = "<ul class='product-tag-recommendations'>";
 			for (var j = 0; (j < 3 && j < response.tag_array.length); j++) {
 				var tag = Object.keys(response.tag_array[j]);
 				var percent = (response.tag_array[j])[tag];
-				$(".product-tag-recommendations").append("<li>" + tag +  " - " + Math.round(percent) + "%</li>")
+				productRecommendations += "<li>" + tag +  " - " + Math.round(percent) + "%</li>";
 			}
+			$(".product-details").append(productRecommendations + "</ul><hr/>");
 
-			$(".gender-male").html("&#9794;&nbsp;" + Math.round(response.gender_percentages.Male) + "%");
-			$(".gender-female").html("&#9792;&nbsp;" + Math.round(response.gender_percentages.Female) + "%");
+			$(".product-details").append("<p class='sub-heading'>Gender Demographics</p>");
+			$(".product-details").append("<span class='gender-male'>&#9794;&nbsp;" + Math.round(response.gender_percentages.Male) + "%</span>");
+			$(".product-details").append("<span class='vertical-divider'>|</span>");
+			$(".product-details").append("<span class='gender-female'>&#9792;&nbsp;" + Math.round(response.gender_percentages.Female) + "%</span>");
 
 			var coordinatesArray = new Array();
 			$.each(response.reviews, function(index, review) {
