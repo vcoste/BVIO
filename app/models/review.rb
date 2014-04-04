@@ -7,9 +7,8 @@ class Review < ActiveRecord::Base
   # number of reviews, average rating, satisfaction
 
   def self.get_avg_rating(reviewArray)
-  	ratingSum = 0
-  	reviewArray.each { |r| ratingSum += r.rating }
-  	avg = ratingSum/reviewArray.length
+  	ratingSum = reviewArray.map{ |r| r.rating }.inject(:+)
+  	avg = ratingSum.to_f/reviewArray.length
   	return avg
   end
 
@@ -20,7 +19,7 @@ class Review < ActiveRecord::Base
   def self.get_satisfaction(reviewArray)
   	satisfactionSum = 0
   	reviewArray.each { |r| satisfactionSum += r.is_recommended }
-  	satisfaction = (satisfactionSum/reviewArray.length) * 100 #return a percentage
+  	satisfaction = (satisfactionSum/reviewArray.length) * 100.00 #return a percentage
   	return satisfaction
   end
 

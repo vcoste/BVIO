@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140403190405) do
+ActiveRecord::Schema.define(version: 20140404000122) do
 
   create_table "authors", force: true do |t|
     t.string   "gender"
@@ -80,6 +80,7 @@ ActiveRecord::Schema.define(version: 20140403190405) do
     t.string   "last_modification_time"
     t.float    "latitude"
     t.float    "longitude"
+    t.string   "tags"
   end
 
   create_table "test", id: false, force: true do |t|
