@@ -6,7 +6,10 @@
 	var category_id = 35;
 
 	var mapContainer;
-	var spinner;
+	var mapSpinner;
+
+	var tableContainer
+	var tableSpinner
 
 	function getLocation(cb) {
 		if (navigator.geolocation) {
@@ -90,6 +93,7 @@
 				corners: getCornerCoordinates(map)	
 			}
 		}).done(function(response) {
+			tableSpinner.stop();
 			$.each(response, function(index, product) {
 				var tableRow = $("<tr>" +
 					"<td>" + product.name + "</td>" +
@@ -113,7 +117,7 @@
 		tomtom.apiKey = "cqz42jgvsqt6qra52jj373hr";
 		//tomtom.setImagePath("../../../vendor/assets/map");
 
-		var opts = {
+		var opts1 = {
 		  lines: 13, // The number of lines to draw
 		  length: 20, // The length of each line
 		  width: 10, // The line thickness
@@ -129,10 +133,30 @@
 		  className: 'spinner', // The CSS class to assign to the spinner
 		  zIndex: 2e9 // The z-index (defaults to 2000000000)
 		};
+		var opts2 = {
+		  lines: 13, // The number of lines to draw
+		  length: 20, // The length of each line
+		  width: 10, // The line thickness
+		  radius: 30, // The radius of the inner circle
+		  corners: 1, // Corner roundness (0..1)
+		  rotate: 0, // The rotation offset
+		  direction: 1, // 1: clockwise, -1: counterclockwise
+		  color: '#000', // #rgb or #rrggbb or array of colors
+		  speed: 1, // Rounds per second
+		  trail: 60, // Afterglow percentage
+		  shadow: false, // Whether to render a shadow
+		  hwaccel: false, // Whether to use hardware acceleration
+		  className: 'spinner', // The CSS class to assign to the spinner
+		  zIndex: 2e9, // The z-index (defaults to 2000000000) 
+		  top: '850px'  // Top position relative to parent in px
+		};
 		
-		mapContainer = document.getElementById('map-container');
-		mapSpinner = new Spinner(opts).spin(mapContainer);
+		mapContainer = document.getElementById('map-container');		
+		mapSpinner = new Spinner(opts1).spin(mapContainer);
 
+		tableContainer = document.getElementById('asdf');
+		console.log(tableContainer);
+		tableSpinner = new Spinner(opts2).spin(tableContainer);
 
 		$("#reDoSearch").bind( "click", function() {
 		  mapCoordinates = getCornerCoordinates(map)
