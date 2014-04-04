@@ -3,7 +3,7 @@
 	var markerManager;
 	var mapCoordinates;
 	var currentCoordinates;
-	var category_id = 35;
+	var category_id = 119;
 
 	var mapContainer;
 	var mapSpinner;
@@ -47,21 +47,36 @@
 			domNode: "map-container",
 			center: [position.coords.latitude, position.coords.longitude],
 			apiKey: "cqz42jgvsqt6qra52jj373hr",
-			zoom: 10,
-			overviewMap: true,
+			zoom: 9,
 			scale: true,
 			panZoomBar: true
 		});
 		mapSpinner.stop();
 		initMarkers(map);
+		renderMapButtons(map);
 		getProducts(category_id, map);
+	}
+
+	function renderMapButtons(map) {
+		var homeButton = $("<a id='searchHome'><i class='fa fa-home'></i> Home</a>");
+		homeButton.on("click", function() {
+			getLocation(setView);
+		});
+		$(".map-buttons").append(homeButton);
+
+		var searchButton = $("<a id='searchProducts'><i class='fa fa-search'></i> Search</a>");
+		searchButton.on("click", function() {
+			mapCoordinates = getCornerCoordinates(map);
+			getProducts(category_id, map);
+		});
+		$(".map-buttons").append(searchButton);
 	}
 
 	function setView(position) { 
 		currentCoordinates = position;
 		console.log(position);
 		var latlng = L.latLng(parseFloat(position.coords.latitude), parseFloat(position.coords.longitude));
-		map.setView (latlng, 12, false);
+		map.setView (latlng, 9, false);
 	}
 
 	function initMarkers(map) {
@@ -93,18 +108,24 @@
 				corners: getCornerCoordinates(map)	
 			}
 		}).done(function(response) {
+
 			tableSpinner.stop();
+
+			$("#productTable tbody").empty();
+
 			$.each(response, function(index, product) {
-				var tableRow = $("<tr>" +
+				var tableRow = $("<tr data-id='" + product.id + "'>" +
 					"<td>" + product.name + "</td>" +
 					"<td>" + product.avg_rating + "</td>" +
-					"<td>" + product.satisfaction + "</td>" +
+					"<td>" + product.satisfaction + "%</td>" +
 					"<td>" + product.total_reviews + "</td>" +
+					"<td>" + product.num_recommendations + "</td>" +
 				"</tr>");
 				tableRow.on("click", function() {
 					if (!$(this).hasClass("selected")) {
 						$("#productTable tbody .selected").removeClass("selected");
 						$(this).addClass("selected");
+						getProductInformation($(this).data("id"), map);
 					}
 				});
 				$("#productTable tbody").append(tableRow);
@@ -112,11 +133,63 @@
 		});
 	}
 
+	function getProductInformation(id, map) {
+		$.ajax({
+			url: "/products/" + id,
+			dataType: "json",
+			data: {
+				corners: getCornerCoordinates(map)
+			}
+		}).done(function(response) {
+			console.log(response);
+			$(".product-details img").attr("src", response.image_url);
+			$(".product-title").html(response.name);
+
+			$(".review-stars").empty();
+			for (var i = 1; i < 6; i++) {
+				if (i <= response.avg_rating) {
+					$(".review-stars").append("&#9733;&nbsp;");
+				} else {
+					$(".review-stars").append("&#9734;&nbsp;");
+				}
+			}
+
+		
+
+		$("#reDoSearch").bind( "click", function() {
+		  mapCoordinates = getCornerCoordinates(map)
+		  console.log(mapCoordinates);
+		  //search with the updated coordinates
+		  //basicaly ajax call to get data from given coordinates
+		});
+
+			var reviewText = (response.top_review.review_text.length > 390 ? response.top_review.review_text.substr(0,390) + "..." : response.top_review.review_text);
+			$(".top-review").html('"' + reviewText +  '"');
+			$(".top-review-rating i").html(response.top_review.rating);
+
+			if (response.top_review.is_recommended) {
+				$(".top-review-recommended i").html("YES");	
+			} else {
+				$(".top-review-recommended i").html("NO");
+			}
+
+			$(".product-tag-recommendations").empty();
+			for (var j = 0; (j < 3 && j < response.tag_array.length); j++) {
+				var tag = Object.keys(response.tag_array[j]);
+				var percent = (response.tag_array[j])[tag];
+				$(".product-tag-recommendations").append("<li>" + tag +  " - " + percent + "%</li>")
+			}
+
+			$(".gender-male").html("&#9794;&nbsp;" + response.gender_percentages.Male + "%");
+			$(".gender-female").html("&#9792;&nbsp;" + response.gender_percentages.Female + "%");
+
+
+		});
+	}
 
 	$(function () {
 		tomtom.apiKey = "cqz42jgvsqt6qra52jj373hr";
-		//tomtom.setImagePath("../../../vendor/assets/map");
-
+		getLocation(displayMap);
 		var opts1 = {
 		  lines: 13, // The number of lines to draw
 		  length: 20, // The length of each line
@@ -154,22 +227,9 @@
 		mapContainer = document.getElementById('map-container');		
 		mapSpinner = new Spinner(opts1).spin(mapContainer);
 
-		tableContainer = document.getElementById('asdf');
+		tableContainer = document.getElementById('spinnerContainer');
 		console.log(tableContainer);
 		tableSpinner = new Spinner(opts2).spin(tableContainer);
-
-		$("#reDoSearch").bind( "click", function() {
-		  mapCoordinates = getCornerCoordinates(map)
-		  console.log(mapCoordinates);
-		  //search with the updated coordinates
-		  //basicaly ajax call to get data from given coordinates
-		});
-
-		$("#locateMe").bind( "click", function() {
-			getLocation(setView)
-			// map.locate();
-		});
-
-		getLocation(displayMap);
+		
 	});
 })(jQuery);
