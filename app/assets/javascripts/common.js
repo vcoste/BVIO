@@ -3,7 +3,7 @@
 	var markerManager;
 	var mapCoordinates;
 	var currentCoordinates;
-	var category_id = 119;
+	var category_id = 68;
 
 	var mapContainer;
 	var mapSpinner;
@@ -19,7 +19,6 @@
 
 	function getCornerCoordinates(map) {
 		var bounds = map.getBounds();
-		console.log(bounds);
 		var corners = {
 			'NE': {
 				'latitude': bounds._northEast.lat,
@@ -74,7 +73,6 @@
 
 	function setView(position) { 
 		currentCoordinates = position;
-		console.log(position);
 		var latlng = L.latLng(parseFloat(position.coords.latitude), parseFloat(position.coords.longitude));
 		map.setView (latlng, 9, false);
 	}
@@ -88,13 +86,14 @@
 	}
 
 	function addMarkers(coordinatesArray) {
-		for (var coordinate in coordinatesArray) {
-			markerManager.addMarker(new tomtom.Marker([coordinate.latitude, coordinate.longitude]));
-		}
+		$.each(coordinatesArray, function(index, coordinate) {
+			var latlng = L.latLng(parseFloat(coordinate.latitude), parseFloat(coordinate.longitude));
+			markerManager.addMarker(new tomtom.Marker(latlng));
+		});
 		markerManager.update();
 	}
 
-	function removeAllMarkers(coordinatesArray) {
+	function removeAllMarkers() {
 		markerManager.clearMarkers();
 		markerManager.update();
 	}
@@ -106,12 +105,14 @@
 			data: {
 				category_id: category,
 				corners: getCornerCoordinates(map)	
+			},
+			beforeSend: function() {
+				tableSpinner.stop();
+				$("#productTable tbody").empty();
+				tableSpinner.spin(tableContainer);	
 			}
 		}).done(function(response) {
-
 			tableSpinner.stop();
-
-			$("#productTable tbody").empty();
 
 			$.each(response, function(index, product) {
 				var tableRow = $("<tr data-id='" + product.id + "'>" +
@@ -141,7 +142,6 @@
 				corners: getCornerCoordinates(map)
 			}
 		}).done(function(response) {
-			console.log(response);
 			$(".product-details img").attr("src", response.image_url);
 			$(".product-title").html(response.name);
 
@@ -153,15 +153,6 @@
 					$(".review-stars").append("&#9734;&nbsp;");
 				}
 			}
-
-		
-
-		$("#reDoSearch").bind( "click", function() {
-		  mapCoordinates = getCornerCoordinates(map)
-		  console.log(mapCoordinates);
-		  //search with the updated coordinates
-		  //basicaly ajax call to get data from given coordinates
-		});
 
 			var reviewText = (response.top_review.review_text.length > 390 ? response.top_review.review_text.substr(0,390) + "..." : response.top_review.review_text);
 			$(".top-review").html('"' + reviewText +  '"');
@@ -177,17 +168,37 @@
 			for (var j = 0; (j < 3 && j < response.tag_array.length); j++) {
 				var tag = Object.keys(response.tag_array[j]);
 				var percent = (response.tag_array[j])[tag];
-				$(".product-tag-recommendations").append("<li>" + tag +  " - " + Number(percent).toFixed() + "%</li>")
+				$(".product-tag-recommendations").append("<li>" + tag +  " - " + Math.round(percent) + "%</li>")
 			}
 
-			$(".gender-male").html("&#9794;&nbsp;" + response.gender_percentages.Male + "%");
-			$(".gender-female").html("&#9792;&nbsp;" + response.gender_percentages.Female + "%");
+			$(".gender-male").html("&#9794;&nbsp;" + Math.round(response.gender_percentages.Male) + "%");
+			$(".gender-female").html("&#9792;&nbsp;" + Math.round(response.gender_percentages.Female) + "%");
 
+			var coordinatesArray = new Array();
+			$.each(response.reviews, function(index, review) {
+				coordinatesArray.push({
+					latitude: review.latitude,
+					longitude: review.longitude
+				});
+			});
 
+			removeAllMarkers();
+			addMarkers(coordinatesArray);
 		});
 	}
 
 	$(function () {
+		$.ajax({
+			url: "/categories",
+			dataType: "json"
+		}).done(function(response) {
+			console.log(response);
+			$.each(response, function(index, category) {
+				var category = $("<li data-id='" + category.id + "'>" + category.name  + "</li>");
+				$("#categoryNavigationList").append(category);	
+			});
+		});
+
 		tomtom.apiKey = "cqz42jgvsqt6qra52jj373hr";
 		getLocation(displayMap);
 		var opts1 = {
@@ -228,7 +239,6 @@
 		mapSpinner = new Spinner(opts1).spin(mapContainer);
 
 		tableContainer = document.getElementById('spinnerContainer');
-		console.log(tableContainer);
 		tableSpinner = new Spinner(opts2).spin(tableContainer);
 		
 	});

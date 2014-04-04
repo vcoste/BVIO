@@ -58,6 +58,7 @@ body {
 		.navigation-title {
 			background-color: #55c2dd !important;
 			border-bottom: 2px solid #2a626f;
+			font-size: 20px;
 			font-weight: 700;
 			padding: 10px;
 			text-align: center;
@@ -99,10 +100,10 @@ body {
 	}
 
 	img {
-		border-radius: 50%;
+		/* border-radius: 50%; */
 		height: 150px;
 		margin-top: 20px;
-		width: 150px;
+		/* width: 150px; */
 	}
 
 	.gender-male {
@@ -137,12 +138,13 @@ body {
 	}
 
 	.sub-heading {
-		margin: 10px 0 0;
+		margin: 10px 0 3px;
 		text-decoration: underline;
 	}
 
 	.top-review {
 		font-size: 12px;
+		margin: 5px 0;
 	}
 
 	.top-review-rating {
