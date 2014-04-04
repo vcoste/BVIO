@@ -111,7 +111,7 @@
 
 	$(function () {
 		tomtom.apiKey = "cqz42jgvsqt6qra52jj373hr";
-		tomtom.setImagePath("../../../vendor/assets/map");
+		//tomtom.setImagePath("../../../vendor/assets/map");
 
 		var opts = {
 		  lines: 13, // The number of lines to draw
