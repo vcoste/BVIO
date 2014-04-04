@@ -18,7 +18,7 @@ class Review < ActiveRecord::Base
   def self.get_satisfaction(reviewArray)
   	satisfactionSum = 0
   	reviewArray.each { |r| satisfactionSum += 1 if r.is_recommended }
-  	satisfaction = reviewArray.length > 0 ? (satisfactionSum/reviewArray.length) * 100.00 : 0.00 #return a percentage
+  	satisfaction = reviewArray.length > 0 ? (satisfactionSum/reviewArray.length.to_f) * 100.00 : 0.00 #return a percentage
   	return satisfaction
   end
 
@@ -33,7 +33,7 @@ class Review < ActiveRecord::Base
 	  	helpfulnessSum += r.helpfulness
 	  end
   	}
-  	helpfulness = totalHelpfulness > 0 ? (helpfulnessSum/totalHelpfulness) * 100.00 : 0.00 #return a percentage
+  	helpfulness = totalHelpfulness > 0 ? (helpfulnessSum.to_f/totalHelpfulness) * 100.00 : 0.00 #return a percentage
   	return helpfulness
   end
 
@@ -55,7 +55,7 @@ class Review < ActiveRecord::Base
     }
 
     tag_hash.each { |key,value|
-      tag_array << {key => (value/total_value) * 100}
+      tag_array << {key => (value/total_value.to_f) * 100}
     }
     tag_array.sort_by!{ |t|
       t.values.first
@@ -70,7 +70,7 @@ class Review < ActiveRecord::Base
     all_authors = Author.all.select{|x| author_ids.include? x.id}
     total_female = all_authors.select{|a| a.gender.downcase == "female"}.length
     total_male = all_authors.select{|a| a.gender.downcase == "male"}.length
-    rtn = num_reviews > 0 ? {"Female" => (total_female / num_reviews) * 100, "Male" => (total_male/num_reviews) * 100} : {"Female" => 0, "Male" => 0}
+    rtn = num_reviews > 0 ? {"Female" => (total_female / num_reviews.to_f) * 100, "Male" => (total_male/num_reviews.to_f) * 100} : {"Female" => 0, "Male" => 0}
   end
 
   def self.get_top_review(reviews)
