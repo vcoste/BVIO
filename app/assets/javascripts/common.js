@@ -10,6 +10,7 @@
 
 	var tableContainer
 	var tableSpinner
+	var productInfoSpinner
 
 	function getLocation(cb) {
 		if (navigator.geolocation) {
@@ -135,6 +136,29 @@
 	}
 
 	function getProductInformation(id, map) {
+
+		var opts1 = {
+		  lines: 7, // The number of lines to draw
+		  length: 4, // The length of each line
+		  width: 2, // The line thickness
+		  radius: 2, // The radius of the inner circle
+		  corners: 1, // Corner roundness (0..1)
+		  rotate: 0, // The rotation offset
+		  direction: 1, // 1: clockwise, -1: counterclockwise
+		  color: '#000', // #rgb or #rrggbb or array of colors
+		  speed: 1, // Rounds per second
+		  trail: 60, // Afterglow percentage
+		  shadow: false, // Whether to render a shadow
+		  hwaccel: false, // Whether to use hardware acceleration
+		  className: 'spinner', // The CSS class to assign to the spinner
+		  zIndex: 2e9, // The z-index (defaults to 2000000000)
+		  top: '235px',
+		  left: '94%'
+		};
+
+		productContainer = document.getElementById('product-container');	
+		productInfoSpinner = new Spinner(opts1).spin(productContainer);
+
 		$.ajax({
 			url: "/products/" + id,
 			dataType: "json",
@@ -142,6 +166,7 @@
 				corners: getCornerCoordinates(map)
 			}
 		}).done(function(response) {
+			productInfoSpinner.stop();
 			$(".product-details").append("<img src='" + response.image_url + "'>");
 			$(".product-details").append("<p class='product-title'>" + response.name + "</p><hr/>");
 
@@ -223,7 +248,8 @@
 		  shadow: false, // Whether to render a shadow
 		  hwaccel: false, // Whether to use hardware acceleration
 		  className: 'spinner', // The CSS class to assign to the spinner
-		  zIndex: 2e9 // The z-index (defaults to 2000000000)
+		  zIndex: 2e9, // The z-index (defaults to 2000000000)
+		  top: '350px'
 		};
 		var opts2 = {
 		  lines: 13, // The number of lines to draw
