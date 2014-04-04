@@ -14,7 +14,7 @@
 		var bounds = map.getBounds();
 		console.log(bounds);
 		var corners = {
-			'NE' : {
+			'NE': {
 				'latitude': bounds._northEast.lat,
 				'longitude': bounds._northEast.lng
 			},
@@ -40,7 +40,7 @@
 			domNode: "map-container",
 			center: [position.coords.latitude, position.coords.longitude],
 			apiKey: "cqz42jgvsqt6qra52jj373hr",
-			zoom: 14,
+			zoom: 10,
 			overviewMap: true,
 			scale: true,
 			panZoomBar: true
@@ -53,7 +53,7 @@
 		currentCoordinates = position;
 		console.log(position);
 		var latlng = L.latLng(parseFloat(position.coords.latitude), parseFloat(position.coords.longitude));
-		map.setView (latlng, 14, false);
+		map.setView (latlng, 12, false);
 	}
 
 	function initMarkers(map) {
@@ -79,7 +79,7 @@
 
 	$(function () {
 		tomtom.apiKey = "cqz42jgvsqt6qra52jj373hr";
-		tomtom.setImagePath("/assets/map");
+		tomtom.setImagePath("../../../vendor/assets/map");
 
 		$("#reDoSearch").bind( "click", function() {
 		  mapCoordinates = getCornerCoordinates(map)
