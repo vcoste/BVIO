@@ -3,7 +3,7 @@
 	var markerManager;
 	var mapCoordinates;
 	var currentCoordinates;
-	var category_id = 68;
+	var category_id;
 
 	var mapContainer;
 	var mapSpinner;
@@ -156,14 +156,16 @@
 		  left: '94%'
 		};
 
-		productContainer = document.getElementById('product-container');	
-		productInfoSpinner = new Spinner(opts1).spin(productContainer);
-
 		$.ajax({
 			url: "/products/" + id,
 			dataType: "json",
 			data: {
 				corners: getCornerCoordinates(map)
+			},
+			beforeSend: function() {
+				productContainer = document.getElementById('product-container');	
+				productInfoSpinner = new Spinner(opts1).spin(productContainer);
+				$(".product-details").empty();
 			}
 		}).done(function(response) {
 			productInfoSpinner.stop();
@@ -225,6 +227,8 @@
 					$("#categoryNavigationList .selected").removeClass("selected");
 					$(this).addClass("selected");
 					category_id = $(this).data("id");
+					console.log("HIT");
+					getProducts(category_id, map);
 				});
 				$("#categoryNavigationList").append(category);
 			});
