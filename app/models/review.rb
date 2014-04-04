@@ -70,7 +70,7 @@ class Review < ActiveRecord::Base
     all_authors = Author.all.select{|x| author_ids.include? x.id}
     total_female = all_authors.select{|a| a.gender.downcase == "female"}.length
     total_male = all_authors.select{|a| a.gender.downcase == "male"}.length
-    {"Female" => (total_female / num_reviews) * 100, "Male" => (total_male/num_reviews) * 100}
+    rtn = num_reviews > 0 ? {"Female" => (total_female / num_reviews) * 100, "Male" => (total_male/num_reviews) * 100} : {"Female" => 0, "Male" => 0}
   end
 
   def self.get_top_review(reviews)
