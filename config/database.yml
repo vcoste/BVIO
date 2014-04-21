@@ -6,10 +6,10 @@
 development:
   adapter: mysql2
   encoding: utf8
-  database: Dove
-  hostname: waterloocoops.cqz8nkry4jqi.us-east-1.rds.amazonaws.com
+  database: dove
+  hostname: bvpinpoint.cqz8nkry4jqi.us-east-1.rds.amazonaws.com
   pool: 5
-  username: waterloocoops
+  username: waterloointerns
   password: canadarulez
   port: 3306
 
@@ -19,19 +19,19 @@ development:
 test:
   adapter: mysql2
   encoding: utf8
-  database: Dove
-  hostname: waterloocoops.cqz8nkry4jqi.us-east-1.rds.amazonaws.com
+  database: dove
+  hostname: bvpinpoint.cqz8nkry4jqi.us-east-1.rds.amazonaws.com
   pool: 5
-  username: waterloocoops
+  username: waterloointerns
   password: canadarulez
   port: 3306
 
 production:
   adapter: mysql2
   encoding: utf8
-  database: Dove
-  hostname: waterloocoops.cqz8nkry4jqi.us-east-1.rds.amazonaws.com
+  database: dove
+  hostname: bvpinpoint.cqz8nkry4jqi.us-east-1.rds.amazonaws.com
   pool: 5
-  username: waterloocoops
+  username: waterloointerns
   password: canadarulez
   port: 3306

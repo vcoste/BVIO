@@ -83,10 +83,4 @@ ActiveRecord::Schema.define(version: 20140404000122) do
     t.string   "tags"
   end
 
-  create_table "test", id: false, force: true do |t|
-    t.integer "id"
-    t.string  "swagger_ratio", limit: 50
-    t.integer "awesome_index"
-  end
-
 end
